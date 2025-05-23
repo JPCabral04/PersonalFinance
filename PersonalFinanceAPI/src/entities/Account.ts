@@ -1,14 +1,12 @@
 import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
   Entity,
+  PrimaryGeneratedColumn,
+  Column,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './User';
-// import { Transaction } from './Transaction';
+import { Transaction } from './Transaction';
 import { AccountType } from '../enums/AccountType.enum';
 
 @Entity()
@@ -25,11 +23,12 @@ export class Account {
   @Column({ type: 'numeric', default: 0 })
   balance!: number;
 
-  // @OneToMany(() => Transaction, (t) => t.originAccount)
-  // transactions: Transaction[];
-
-  @ManyToOne(() => User, (user) => user.accounts, {
-    nullable: false,
-  })
+  @ManyToOne(() => User, (user) => user.accounts)
   user!: User;
+
+  @OneToMany(() => Transaction, (t) => t.originAccount, { nullable: true })
+  outgoingTransactions?: Transaction[];
+
+  @OneToMany(() => Transaction, (t) => t.destinationAccount, { nullable: true })
+  incomingTransactions?: Transaction[];
 }

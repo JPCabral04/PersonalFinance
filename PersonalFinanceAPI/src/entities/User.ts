@@ -17,6 +17,7 @@ export class User {
 
   @OneToMany(() => Account, (account) => account.user, {
     cascade: ['remove'],
+    nullable: true,
   })
   accounts?: Account[];
 }
