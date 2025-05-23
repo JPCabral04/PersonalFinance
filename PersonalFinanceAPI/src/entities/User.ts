@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-// import { Account } from './Account';
+import { Account } from './Account';
 
 @Entity()
 export class User {
@@ -15,8 +15,8 @@ export class User {
   @Column()
   password!: string;
 
-  // @OneToMany(() => Account, (account) => account.user, {
-  //   cascade: ['remove'],
-  // })
-  // accounts: Account[];
+  @OneToMany(() => Account, (account) => account.user, {
+    cascade: ['remove'],
+  })
+  accounts?: Account[];
 }
