@@ -28,9 +28,12 @@ export const createAccount = async (
 };
 
 export const getAccounts = async (userId: string) => {
-  return await accountRepo.find({
+  const accounts = await accountRepo.find({
     where: { user: { id: userId } },
   });
+
+  if (!accounts) throw { status: 404, message: 'Nenhuma conta encontrada' };
+  return accounts;
 };
 
 export const updateAccount = async ({

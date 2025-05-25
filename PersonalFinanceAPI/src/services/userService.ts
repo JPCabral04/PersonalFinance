@@ -4,11 +4,15 @@ import { User } from '../entities/User';
 const userRepo = AppDataSource.getRepository(User);
 
 export const getAllUsers = async () => {
-  return userRepo.find();
+  const users = userRepo.find();
+  if (!users) throw { status: 404, message: 'Nenhum usuário encontrado' };
+  return users;
 };
 
 export const getUserById = async (id: string) => {
-  return userRepo.findOneBy({ id });
+  const user = userRepo.findOneBy({ id });
+  if (!user) throw { status: 404, message: 'Usuário não encontrado' };
+  return user;
 };
 
 export const updateUser = async (id: string, data: any) => {
