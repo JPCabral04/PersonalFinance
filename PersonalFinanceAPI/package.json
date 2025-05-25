@@ -7,11 +7,12 @@
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint .",
     "format": "prettier --write .",
     "test": "jest",
     "check": "pnpm lint && pnpm format"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",

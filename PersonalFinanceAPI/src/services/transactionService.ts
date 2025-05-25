@@ -11,7 +11,7 @@ export const transfer = async (
   destinationAccountId: string,
   amount: number,
   description?: string,
-) => {
+): Promise<Transaction> => {
   const origin = await accoutRepo.findOneBy({ id: originAccountId });
   const destination = await accoutRepo.findOneBy({
     id: destinationAccountId,
@@ -44,8 +44,45 @@ export const transfer = async (
   });
   await transactionRepo.save(transaction);
 
-  return {
-    message: 'Transferência realizada com sucesso',
-    transaction,
-  };
+  return transaction;
+};
+
+export const getTransactions = async (
+  accountId?: string,
+  dateFrom?: Date,
+  dateTo?: Date,
+) => {
+  const qb = transactionRepo
+    .createQueryBuilder('tx')
+    .leftJoinAndSelect('tx.originAccount', 'origin')
+    .leftJoinAndSelect('tx.destinationAccount', 'destination')
+    .orderBy('tx.transactionDate', 'DESC');
+
+  if (accountId) {
+    qb.andWhere('(origin.id = :accountId OR destination.id = :accountId)', {
+      accountId,
+    });
+  }
+  if (dateFrom) {
+    qb.andWhere('tx.transactionDate >= :dateFrom', { dateFrom });
+  }
+  if (dateTo) {
+    qb.andWhere('tx.transactionDate <= :dateTo', { dateTo });
+  }
+
+  const transactions = await qb.getMany();
+  if (transactions.length === 0) {
+    throw {
+      status: 404,
+      message: 'Nenhuma transação encontrada',
+    };
+  }
+
+  return transactions.map((tx) => {
+    const displayType: TransactionType =
+      accountId && tx.originAccount.id === accountId
+        ? TransactionType.DEBIT
+        : TransactionType.CREDIT;
+    return { ...tx, displayType };
+  });
 };

@@ -5,6 +5,7 @@ import { errorHandler } from './middlewares/errorHandler';
 import authRoute from './routes/authRoute';
 import userRoute from './routes/userRoute';
 import accountRoute from './routes/accountRoute';
+import transactionRoute from './routes/transactionRoute';
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/auth', authRoute);
 app.use('/user', userRoute);
 app.use('/account', accountRoute);
+app.use('/transaction', transactionRoute);
 
 app.use(errorHandler);
 
