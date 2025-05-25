@@ -23,7 +23,7 @@ export class Transaction {
   destinationAccount!: Account;
 
   @Column({ type: 'numeric' })
-  transactionValue!: number;
+  amount!: number;
 
   @Column({ nullable: true })
   description?: string;
