@@ -9,18 +9,6 @@ export const register = async (
 ) => {
   try {
     const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
-      res
-        .status(status.BAD_REQUEST)
-        .json({ error: 'name, email e password são obrigatórios' });
-    }
-    if (typeof password !== 'string' || password.length < 6) {
-      res
-        .status(status.BAD_REQUEST)
-        .json({ error: 'A senha deve ter pelo menos 6 caracteres' });
-    }
-
     const user = await createUser(name, email, password);
     res.status(status.CREATED).json(user);
   } catch (err: any) {
@@ -35,12 +23,6 @@ export const login = async (
 ) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      res
-        .status(status.BAD_REQUEST)
-        .json({ error: 'email e password são obrigatórios' });
-    }
 
     const token = await signUser(email, password);
     res.status(status.OK).json({ token });
