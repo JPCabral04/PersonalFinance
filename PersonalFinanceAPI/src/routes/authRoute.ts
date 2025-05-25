@@ -9,3 +9,5 @@ export const authRoute = Router();
 
 authRoute.post('/register', register, validateRegisterInput);
 authRoute.post('/login', login, validateLoginInput);
+
+export default authRoute;

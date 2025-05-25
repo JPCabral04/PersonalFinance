@@ -6,11 +6,11 @@ import {
   getUserById,
   updateUser,
 } from '../controller/userController';
-import { authMiddleware } from '../middlewares/authMiddleware';
+import { authenticate } from '../middlewares/authMiddleware';
 
 const userRoute = Router();
 
-userRoute.use(authMiddleware);
+userRoute.use(authenticate);
 
 userRoute.get('/', getAllUsers);
 userRoute.get('/:id', getUserById);

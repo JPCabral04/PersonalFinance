@@ -1,9 +1,8 @@
 import { AppDataSource } from './data-source';
 import express from 'express';
 import dotenv from 'dotenv';
-import { authRoute } from './routes/authRoute';
-
 import { errorHandler } from './middlewares/errorHandler';
+import authRoute from './routes/authRoute';
 import userRoute from './routes/userRoute';
 
 dotenv.config();
