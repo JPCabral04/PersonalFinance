@@ -1,5 +1,6 @@
 // src/middlewares/errorHandler.ts
 import { Request, Response, NextFunction } from 'express';
+import status from 'http-status';
 
 export const errorHandler = (
   err: any,
@@ -8,7 +9,7 @@ export const errorHandler = (
   next: NextFunction,
 ) => {
   console.error(err);
-  const statusCode = err.status || 500;
+  const statusCode = err.status || status.INTERNAL_SERVER_ERROR;
   const message = err.message || 'Erro interno do servidor';
 
   res.status(statusCode).json({ error: message });

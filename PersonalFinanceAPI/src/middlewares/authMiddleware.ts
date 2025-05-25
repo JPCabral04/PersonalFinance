@@ -1,15 +1,13 @@
-import { NextFunction, Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import status from 'http-status';
 import jwt from 'jsonwebtoken';
 
-export const authMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const authMiddleware: RequestHandler = (req, res, next) => {
   const auth = req.headers.authorization;
-  if (!auth)
-    return res.status(status.UNAUTHORIZED).json({ message: 'Token ausente' });
+  if (!auth) {
+    res.status(status.UNAUTHORIZED).json({ message: 'Token ausente' });
+    return;
+  }
 
   const token = auth.split(' ')[1];
   try {
@@ -18,5 +16,6 @@ export const authMiddleware = (
     next();
   } catch {
     res.status(status.UNAUTHORIZED).json({ message: 'Token inválido' });
+    return;
   }
 };

@@ -1,4 +1,4 @@
-import { status } from 'http-status';
+import status from 'http-status';
 import { NextFunction, Request, Response } from 'express';
 import { createUser, signUser } from '../services/authService';
 
