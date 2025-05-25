@@ -12,7 +12,6 @@
     "test": "jest",
     "check": "pnpm lint && pnpm format"
   },
-  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",

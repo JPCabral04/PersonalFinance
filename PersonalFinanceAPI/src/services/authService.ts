@@ -25,7 +25,11 @@ export const signUser = async (email: string, password: string) => {
   const match = await bcrypt.compare(password, user.password);
   if (!match) throw { status: 401, message: 'Senha incorreta' };
 
-  return jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
-    expiresIn: '7d',
-  });
+  return jwt.sign(
+    { id: user.id, name: user.name, email: user.email },
+    process.env.JWT_SECRET!,
+    {
+      expiresIn: '7d',
+    },
+  );
 };
