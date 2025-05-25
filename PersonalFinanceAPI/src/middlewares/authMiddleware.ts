@@ -16,7 +16,7 @@ export const authenticate: RequestHandler = (
   const token = auth.split(' ')[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    (req as any).user = decoded;
+    req.user = decoded;
     next();
   } catch {
     res.status(status.UNAUTHORIZED).json({ message: 'Token inválido' });
