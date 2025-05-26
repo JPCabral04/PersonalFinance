@@ -4,7 +4,7 @@ import {
   deleteAccount,
   getAccounts,
   updateAccount,
-} from '../controller/accountController';
+} from '../controllers/accountController';
 import { authenticate } from '../middlewares/authMiddleware';
 
 export const accountRoute = Router();

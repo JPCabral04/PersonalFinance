@@ -11,5 +11,5 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src", "src/@types"]
+  "include": ["src", "src/@types", "src/jest.setup.ts"]
 }

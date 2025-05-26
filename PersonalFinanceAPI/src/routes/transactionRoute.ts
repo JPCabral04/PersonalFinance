@@ -3,7 +3,7 @@ import { authenticate } from '../middlewares/authMiddleware';
 import {
   createTransaction,
   getTransactions,
-} from '../controller/transactionController';
+} from '../controllers/transactionController';
 
 export const transactionRoute = Router();
 
