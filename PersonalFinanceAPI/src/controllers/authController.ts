@@ -10,7 +10,11 @@ export const register = async (
   try {
     const { name, email, password } = req.body;
     const user = await createUser(name, email, password);
-    res.status(status.CREATED).json(user);
+    res.status(status.CREATED).json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
   } catch (err: any) {
     next(err);
   }
