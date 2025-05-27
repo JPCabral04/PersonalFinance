@@ -36,12 +36,12 @@ export const validateRegisterInput: RequestHandler = (
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
-    res.status(400).json({ error: 'Campos obrigatórios ausentes' });
+    res.status(400).json({ message: 'Campos obrigatórios ausentes' });
     return;
   }
 
   if (typeof password !== 'string' || password.length < 6) {
-    res.status(400).json({ error: 'Senha inválida' });
+    res.status(400).json({ message: 'Senha inválida' });
     return;
   }
 
@@ -58,7 +58,8 @@ export const validateLoginInput: RequestHandler = (
   if (!email || !password) {
     res
       .status(status.BAD_REQUEST)
-      .json({ error: 'email e password são obrigatórios' });
+      .json({ message: 'email e password são obrigatórios' });
+    return;
   }
 
   next();

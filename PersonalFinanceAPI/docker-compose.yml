@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB_FINANCE}
     ports:
-      - '5434:5432' # local:container
+      - '5434:5432'
     volumes:
       - ./data/finance:/var/lib/postgresql/data
     restart: unless-stopped
