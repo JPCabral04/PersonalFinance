@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
     "check": "pnpm lint && pnpm format"
   },
   "keywords": [],
