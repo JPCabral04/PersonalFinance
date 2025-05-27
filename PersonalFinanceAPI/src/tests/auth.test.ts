@@ -14,9 +14,11 @@ describe('Authentication Tests', () => {
         .post('/api/auth/register')
         .send(newUser)
         .expect(status.CREATED);
-      expect(res.body).toHaveProperty('id');
-      expect(res.body.name).toBe(newUser.name);
-      expect(res.body.email).toBe(newUser.email);
+      expect(res.body).toEqual({
+        name: newUser.name,
+        email: newUser.email,
+        id: expect.any(String),
+      });
     });
 
     it('deve retornar 400 ao tentar registrar com email já cadastrado', async () => {
@@ -82,7 +84,7 @@ describe('Authentication Tests', () => {
         .post('/api/auth/login')
         .send(invalidCredentials)
         .expect(401);
-      expect(res.body.message).toMatch('Email não cadastrado');
+      expect(res.body.message).toMatch('Credenciais inválidas');
     });
 
     it('deve retornar 401 ao tentar logar com senha incorreta', async () => {
@@ -94,7 +96,7 @@ describe('Authentication Tests', () => {
         .post('/api/auth/login')
         .send(invalidCredentials)
         .expect(401);
-      expect(res.body.message).toMatch('Senha incorreta');
+      expect(res.body.message).toMatch('Credenciais inválidas');
     });
 
     it('deve retornar 400 ao tentar logar com campos vazios', async () => {

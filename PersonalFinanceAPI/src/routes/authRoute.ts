@@ -4,8 +4,6 @@ import {
   validateLoginInput,
   validateRegisterInput,
 } from '../middlewares/authMiddleware';
-import { errorHandler } from '../middlewares/errorHandler';
-import { app } from '../app';
 
 export const authRoute = Router();
 

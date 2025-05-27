@@ -20,10 +20,9 @@ export const createUser = async (
 
 export const signUser = async (email: string, password: string) => {
   const user = await userRepo.findOne({ where: { email } });
-  if (!user) throw { status: 401, message: 'Email não cadastrado' };
-
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) throw { status: 401, message: 'Senha incorreta' };
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    throw { status: 401, message: 'Credenciais inválidas' };
+  }
 
   return jwt.sign(
     { id: user.id, name: user.name, email: user.email },
