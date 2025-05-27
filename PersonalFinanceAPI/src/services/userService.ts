@@ -30,3 +30,7 @@ export const deleteUser = async (id: string) => {
   if (result.affected === 0)
     throw { status: 404, message: 'Usuário não encontrado' };
 };
+
+export const clearUsers = async () => {
+  await userRepo.clear();
+};
