@@ -3,8 +3,8 @@ import request from 'supertest';
 import { app } from '../app';
 import status from 'http-status';
 
-export async function createAndLoginTestUser(emailSuffix = '') {
-  const email = `test${emailSuffix}@example.com`;
+export async function createAndLoginTestUser() {
+  const email = 'test@example.com';
   const password = 'testpassword';
 
   const newUser = {

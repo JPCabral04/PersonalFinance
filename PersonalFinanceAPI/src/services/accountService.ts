@@ -86,3 +86,7 @@ export const deleteAccount = async (accountId: string, userId: string) => {
 
   return await accountRepo.remove(account);
 };
+
+export const clearAccounts = async () => {
+  await accountRepo.createQueryBuilder().delete().from(Account).execute();
+};
