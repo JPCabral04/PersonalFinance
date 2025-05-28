@@ -2,30 +2,14 @@ import request from 'supertest';
 import { app } from '../app';
 import status from 'http-status';
 import * as userService from '../services/userService';
+import { createAndLoginTestUser } from '../utils/auth';
 
 describe('User Tests', () => {
   let token: string;
   let userId: string;
 
   beforeEach(async () => {
-    const newUser = {
-      name: 'testuser',
-      email: 'test@example.com',
-      password: 'testpassword',
-    };
-
-    const userRes = await request(app)
-      .post('/api/auth/register')
-      .send(newUser)
-      .expect(status.CREATED);
-
-    const loginRes = await request(app)
-      .post('/api/auth/login')
-      .send({ email: newUser.email, password: newUser.password })
-      .expect(status.OK);
-
-    token = loginRes.body.token;
-    userId = userRes.body.id;
+    ({ token, userId } = await createAndLoginTestUser());
   });
 
   afterEach(async () => {
