@@ -11,7 +11,7 @@ const accountRepo = AppDataSource.getRepository(Account);
 export const createAccount = async (
   name: string,
   accountType: AccountType,
-  balance: number,
+  balance: number | undefined,
   userId: string,
 ) => {
   const user = await userRepo.findOneBy({ id: userId });

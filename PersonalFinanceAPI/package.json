@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test:coverage": "cross-env NODE_ENV=test jest --coverage --runInBand",
     "check": "pnpm lint && pnpm format"
   },
   "keywords": [],

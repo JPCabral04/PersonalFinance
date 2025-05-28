@@ -39,6 +39,23 @@ describe('Accounts Tests', () => {
       accountId = res.body.id;
     });
 
+    it('deve criar conta com saldo 0 se balance for undefined', async () => {
+      const payload = {
+        name: 'Conta Sem Saldo',
+        accountType: AccountType.CORRENTE,
+        balance: undefined,
+        userId,
+      };
+
+      const res = await request(app)
+        .post('/api/account')
+        .set('Authorization', `Bearer ${token}`)
+        .send(payload)
+        .expect(status.CREATED);
+
+      expect(res.body.balance).toBe(0);
+    });
+
     it('deve retornar erro 400 se o balance for negativo', async () => {
       const payload = {
         name: 'Saldo Negativo',
@@ -82,7 +99,7 @@ describe('Accounts Tests', () => {
         .send(payload)
         .expect(status.BAD_REQUEST);
 
-      expect(res.body.message).toMatch('Credenciais inválidas');
+      expect(res.body.message).toMatch('Tipo de conta inválido');
     });
 
     it('deve retornar erro 404 se userId não existir', async () => {
@@ -121,6 +138,56 @@ describe('Accounts Tests', () => {
         balance: expect.any(Number),
       });
       expect(parseFloat(res.body.balance)).toBeCloseTo(updates.balance);
+    });
+
+    it('deve atualizar apenas o nome da conta', async () => {
+      const res = await request(app)
+        .put(`/api/account/${accountId}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({ name: 'Só Nome' })
+        .expect(status.OK);
+
+      expect(res.body.name).toBe('Só Nome');
+    });
+
+    it('deve retornar 400 quando o nome for uma string vazia', async () => {
+      const invalid = { name: '', accountType: 'CHECKING', balance: 1000 };
+
+      const res = await request(app)
+        .put(`/api/account/${accountId}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(invalid)
+        .expect(400);
+
+      expect(res.body.message).toMatch('Nome inválido');
+    });
+
+    it('deve retornar 400 quando o nome não for uma string', async () => {
+      const invalid = { name: 12345, accountType: 'CHECKING', balance: 1000 };
+
+      const res = await request(app)
+        .put(`/api/account/${accountId}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(invalid)
+        .expect(400);
+
+      expect(res.body.message).toMatch('Nome inválido');
+    });
+
+    it('deve retornar 400 quando o tipo de conta for inválido', async () => {
+      const invalid = {
+        name: 'Conta 1',
+        accountType: 'INVALID',
+        balance: 1000,
+      };
+
+      const res = await request(app)
+        .put(`/api/account/${accountId}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(invalid)
+        .expect(400);
+
+      expect(res.body.message).toMatch('Tipo de conta inválido');
     });
 
     it('deve retornar 400 quando o saldo for negativo', async () => {

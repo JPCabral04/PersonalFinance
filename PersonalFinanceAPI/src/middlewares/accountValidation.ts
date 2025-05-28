@@ -16,19 +16,21 @@ export const validateCreateAccount = (
     !name ||
     typeof name !== 'string' ||
     name.trim().length === 0 ||
-    !accountType ||
-    balance === undefined
+    !accountType
   ) {
     res.status(400).json({ message: 'Ausência de campos obrigatórios' });
     return;
   }
 
   if (!isValidAccountType(accountType)) {
-    res.status(400).json({ message: 'Credenciais inválidas' });
+    res.status(400).json({ message: 'Tipo de conta inválido' });
     return;
   }
 
-  if (typeof balance !== 'number' || isNaN(balance) || balance < 0) {
+  if (
+    balance !== undefined &&
+    (typeof balance !== 'number' || isNaN(balance) || balance < 0)
+  ) {
     res.status(400).json({ message: 'Saldo deve ser um número positivo' });
     return;
   }
@@ -47,12 +49,12 @@ export const validateUpdateAccount = (
     name !== undefined &&
     (typeof name !== 'string' || name.trim().length === 0)
   ) {
-    res.status(400).json({ message: 'Credenciais inválidas' });
+    res.status(400).json({ message: 'Nome inválido' });
     return;
   }
 
   if (accountType !== undefined && !isValidAccountType(accountType)) {
-    res.status(400).json({ message: 'Credencias inválidas' });
+    res.status(400).json({ message: 'Tipo de conta inválido' });
     return;
   }
 
