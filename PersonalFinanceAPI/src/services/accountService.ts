@@ -32,16 +32,17 @@ export const getAccounts = async (userId: string) => {
     where: { user: { id: userId } },
   });
 
-  if (!accounts) throw { status: 404, message: 'Nenhuma conta encontrada' };
+  if (accounts.length === 0)
+    throw { status: 404, message: 'Nenhuma conta encontrada' };
   return accounts;
 };
 
 export const updateAccount = async ({
   accountId,
-  userId,
   name,
   accountType,
   balance,
+  userId,
 }: {
   accountId: string;
   userId: string;

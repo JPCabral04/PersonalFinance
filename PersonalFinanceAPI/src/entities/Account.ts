@@ -20,7 +20,14 @@ export class Account {
   @Column({ type: 'enum', enum: AccountType })
   accountType!: AccountType;
 
-  @Column({ type: 'numeric', default: 0 })
+  @Column({
+    type: 'numeric',
+    transformer: {
+      to: (value: number) => value,
+      from: (value: string) => parseFloat(value),
+    },
+    default: 0,
+  })
   balance!: number;
 
   @ManyToOne(() => User, (user) => user.accounts)

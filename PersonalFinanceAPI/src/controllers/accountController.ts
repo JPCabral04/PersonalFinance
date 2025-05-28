@@ -7,14 +7,14 @@ export const createAccount = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { name, accountType, balance } = req.body;
+  const { name, accountType, balance, userId } = req.body;
 
   try {
     const account = await accountService.createAccount(
       name,
       accountType,
       balance,
-      req.params.id,
+      userId,
     );
 
     res.status(status.CREATED).json(account);
@@ -29,7 +29,7 @@ export const getAccounts = async (
   next: NextFunction,
 ) => {
   try {
-    const accounts = await accountService.getAccounts(req.params.id);
+    const accounts = await accountService.getAccounts(req.user.id);
     res.status(status.OK).json(accounts);
   } catch (err) {
     next(err);
@@ -46,10 +46,10 @@ export const updateAccount = async (
   try {
     const account = await accountService.updateAccount({
       accountId: req.params.id,
-      userId: req.user.id,
       name,
       accountType,
       balance,
+      userId: req.user.id,
     });
 
     res.status(status.OK).json(account);
