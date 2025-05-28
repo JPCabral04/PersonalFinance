@@ -8,7 +8,6 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.error(err);
   const statusCode = err.status || status.INTERNAL_SERVER_ERROR;
   const message = err.message || 'Erro interno do servidor';
 

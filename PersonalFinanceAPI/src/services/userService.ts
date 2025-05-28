@@ -4,13 +4,14 @@ import { User } from '../entities/User';
 const userRepo = AppDataSource.getRepository(User);
 
 export const getAllUsers = async () => {
-  const users = userRepo.find();
-  if (!users) throw { status: 404, message: 'Nenhum usuário encontrado' };
+  const users = await userRepo.find();
+  if (users.length === 0)
+    throw { status: 404, message: 'Nenhum usuário encontrado' };
   return users;
 };
 
 export const getUserById = async (id: string) => {
-  const user = userRepo.findOneBy({ id });
+  const user = await userRepo.findOneBy({ id });
   if (!user) throw { status: 404, message: 'Usuário não encontrado' };
   return user;
 };
@@ -32,5 +33,5 @@ export const deleteUser = async (id: string) => {
 };
 
 export const clearUsers = async () => {
-  await userRepo.clear();
+  await userRepo.createQueryBuilder().delete().from(User).execute();
 };
