@@ -86,3 +86,7 @@ export const getTransactions = async (
     return { ...tx, displayType };
   });
 };
+
+export const clearTransactions = async () => {
+  await transactionRepo.createQueryBuilder().delete().from(Account).execute();
+};
