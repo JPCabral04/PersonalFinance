@@ -7,14 +7,14 @@ const transactionRepo = AppDataSource.getRepository(Transaction);
 const accoutRepo = AppDataSource.getRepository(Account);
 
 export const transfer = async (
-  originAccountId: string,
-  destinationAccountId: string,
+  originAccount: string,
+  destinationAccount: string,
   amount: number,
   description?: string,
 ): Promise<Transaction> => {
-  const origin = await accoutRepo.findOneBy({ id: originAccountId });
+  const origin = await accoutRepo.findOneBy({ id: originAccount });
   const destination = await accoutRepo.findOneBy({
-    id: destinationAccountId,
+    id: destinationAccount,
   });
 
   if (!origin || !destination)
@@ -26,7 +26,7 @@ export const transfer = async (
   if (origin.balance < amount)
     throw {
       status: 400,
-      message: 'Saldo insuficiente na conta de origem',
+      message: 'Saldo insuficiente',
     };
 
   origin.balance -= amount;
@@ -88,5 +88,5 @@ export const getTransactions = async (
 };
 
 export const clearTransactions = async () => {
-  await transactionRepo.createQueryBuilder().delete().from(Account).execute();
+  await transactionRepo.createQueryBuilder().delete().execute();
 };

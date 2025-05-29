@@ -5,20 +5,19 @@ export const validateTransfer = (
   res: Response,
   next: NextFunction,
 ) => {
-  const { originAccountId, destinationAccountId, amount, description } =
-    req.body;
+  const { originAccount, destinationAccount, amount, description } = req.body;
 
-  if (!originAccountId || typeof originAccountId !== 'string') {
+  if (!originAccount || typeof originAccount !== 'string') {
     res.status(400).json({ message: 'ID da conta de origem inválido' });
     return;
   }
 
-  if (!destinationAccountId || typeof destinationAccountId !== 'string') {
+  if (!destinationAccount || typeof destinationAccount !== 'string') {
     res.status(400).json({ message: 'ID da conta de destino inválido' });
     return;
   }
 
-  if (originAccountId === destinationAccountId) {
+  if (originAccount === destinationAccount) {
     res
       .status(400)
       .json({ message: 'Conta de origem e destino devem ser diferentes' });
