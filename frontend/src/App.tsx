@@ -22,11 +22,14 @@ function App() {
         </Route>
 
         {/* Rota padrão ou home */}
-        <Route path="/" element={
-          <div className="text-center p-8">
-            <h1 className="text-3xl font-bold">Bem-vindo ao projeto!</h1>
-          </div>
-        } />
+        <Route
+          path="/"
+          element={
+            <div className="text-center p-8">
+              <h1 className="text-3xl font-bold">Bem-vindo ao projeto!</h1>
+            </div>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
