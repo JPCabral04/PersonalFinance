@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import type { UserRegisterPayload } from '@/interfaces/auth';
-import { register } from '@/services/auth';
+import { useAuth } from '@/context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface RegisterFormData {
   name: string;
@@ -12,9 +11,7 @@ interface RegisterFormData {
 }
 
 const RegisterForm: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { register: authRegister, isLoadingAuth, authError } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -28,43 +25,16 @@ const RegisterForm: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
-    setError(null);
-    setSuccessMessage(null);
-
-    if (data.password !== data.confirmPassword) {
-      setError('As senhas não coincidem.');
-      return;
-    }
-
-    setIsLoading(true);
-    const payload: UserRegisterPayload = {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    };
-
     try {
-      await register(payload);
-      setSuccessMessage(
-        'Registro bem-sucedido! Você será redirecionado para a página de login.',
-      );
+      await authRegister(data);
       reset();
-
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          'Falha no registro. Verifique os dados ou tente novamente.',
-      );
-      console.error('Erro de registro:', err);
-    } finally {
-      setIsLoading(false);
+      navigate('/login');
+    } catch (err) {
+      console.error('Erro de submissão de registro:', err);
     }
   };
 
-  const isFormDisabled = isLoading || isSubmitting;
+  const isFormDisabled = isLoadingAuth || isSubmitting;
 
   return (
     <div className="w-full px-4 py-6 sm:px-6 md:px-8 lg:px-10">
@@ -76,20 +46,13 @@ const RegisterForm: React.FC = () => {
         É rápido e fácil.
       </p>
 
-      {/* Formulário de Registro */}
       <form className="mt-6 space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        {error && (
-          <div className="animate-fade-in rounded-md border border-red-200 bg-red-50 px-3 py-2 text-center text-sm text-red-700">
-            {error}
-          </div>
-        )}
-        {successMessage && (
-          <div className="bg-secondary-50 border-secondary-200 text-secondary-700 animate-fade-in rounded-md border px-3 py-2 text-center text-sm">
-            {successMessage}
+        {authError && (
+          <div className="animate-fade-in rounded-md border border-red-200 bg-red-50 px-3 py-3 text-center text-sm text-red-700">
+            {authError}
           </div>
         )}
 
-        {/* Campos de Input (Nome, Email, Senha, Confirmar Senha) */}
         <div>
           <label
             htmlFor="name"
@@ -103,7 +66,7 @@ const RegisterForm: React.FC = () => {
             autoComplete="name"
             placeholder="Seu nome completo"
             {...rhfRegister('name', { required: 'O nome é obrigatório.' })}
-            className={`relative block w-full appearance-none border px-3 py-2 ${
+            className={`relative block w-full appearance-none border px-3 py-3 ${
               errors.name ? 'border-red-400' : 'border-gray-300'
             } focus:ring-primary-500 focus:border-primary-500 rounded-md text-sm text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none ${
               isFormDisabled ? 'cursor-not-allowed bg-gray-100' : ''
@@ -134,7 +97,7 @@ const RegisterForm: React.FC = () => {
                 message: 'Por favor, insira um email válido.',
               },
             })}
-            className={`relative block w-full appearance-none border px-3 py-2 ${
+            className={`relative block w-full appearance-none border px-3 py-3 ${
               errors.email ? 'border-red-400' : 'border-gray-300'
             } focus:ring-primary-500 focus:border-primary-500 rounded-md text-sm text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none ${
               isFormDisabled ? 'cursor-not-allowed bg-gray-100' : ''
@@ -165,7 +128,7 @@ const RegisterForm: React.FC = () => {
                 message: 'A senha deve ter pelo menos 8 caracteres.',
               },
             })}
-            className={`relative block w-full appearance-none border px-3 py-2 ${
+            className={`relative block w-full appearance-none border px-3 py-3 ${
               errors.password ? 'border-red-400' : 'border-gray-300'
             } focus:ring-primary-500 focus:border-primary-500 rounded-md text-sm text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none ${
               isFormDisabled ? 'cursor-not-allowed bg-gray-100' : ''
@@ -196,7 +159,7 @@ const RegisterForm: React.FC = () => {
               validate: (value) =>
                 value === getValues('password') || 'As senhas não coincidem.',
             })}
-            className={`relative block w-full appearance-none border px-3 py-2 ${
+            className={`relative block w-full appearance-none border px-3 py-3 ${
               errors.confirmPassword ? 'border-red-400' : 'border-gray-300'
             } focus:ring-primary-500 focus:border-primary-500 rounded-md text-sm text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none ${
               isFormDisabled ? 'cursor-not-allowed bg-gray-100' : ''
@@ -210,12 +173,11 @@ const RegisterForm: React.FC = () => {
           )}
         </div>
 
-        {/* Botão de Registro */}
         <div>
           <button
             type="submit"
             disabled={isFormDisabled || !isValid}
-            className={`group relative flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-base font-medium text-white ${
+            className={`group relative flex w-full justify-center rounded-md border border-transparent px-4 py-3 text-base font-medium text-white ${
               isFormDisabled || !isValid
                 ? 'bg-primary-700/40 cursor-not-allowed'
                 : 'bg-primary-500 hover:bg-primary-600 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2 focus:outline-none'
@@ -225,7 +187,6 @@ const RegisterForm: React.FC = () => {
           </button>
         </div>
       </form>
-      {/* Link para Login */}
       <div className="text-center">
         <p className="text-sm text-gray-600">
           Já tem uma conta?{' '}

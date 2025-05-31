@@ -1,38 +1,75 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import ProfilePage from './pages/ProfilePage';
-import AccountsPage from './pages/AccountsPage';
-import TransactionsPage from './pages/TransactionsPage';
-import ProtectedRoute from './components/ProtectedRoute';
+import LoadingSpinner from './components/LoadingSpinner';
 
-function App() {
+// Componente para rotas protegidas (já existente)
+const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { isAuthenticated, isLoadingAuth } = useAuth();
+
+  if (isLoadingAuth) {
+    return <LoadingSpinner />;
+  }
+
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
+};
+
+const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, isLoadingAuth } = useAuth();
+
+  if (isLoadingAuth) {
+    return <LoadingSpinner />;
+  }
+
+  return isAuthenticated ? <Navigate to="/" replace /> : children;
+};
+
+const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Rotas Públicas */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+    <Router>
+      <AuthProvider>
+        <Routes>
+          {/* Rotas Públicas que devem ser protegidas de usuários logados */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <RegisterPage />
+              </PublicRoute>
+            }
+          />
 
-        {/* Rotas Protegidas */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/accounts" element={<AccountsPage />} />
-          <Route path="/transactions" element={<TransactionsPage />} />
-        </Route>
-
-        {/* Rota padrão ou home */}
-        <Route
-          path="/"
-          element={
-            <div className="text-center p-8">
-              <h1 className="text-3xl font-bold">Bem-vindo ao projeto!</h1>
-            </div>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          {/* Rotas Protegidas (apenas para usuários logados) */}
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <HomePage />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
+    </Router>
   );
-}
+};
 
 export default App;
