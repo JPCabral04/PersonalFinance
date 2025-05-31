@@ -24,11 +24,20 @@ export const signUser = async (email: string, password: string) => {
     throw { status: 401, message: 'Credenciais inválidas' };
   }
 
-  return jwt.sign(
+  const token = jwt.sign(
     { id: user.id, name: user.name, email: user.email },
     process.env.JWT_SECRET!,
     {
       expiresIn: '7d',
     },
   );
+
+  return {
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    },
+  };
 };
