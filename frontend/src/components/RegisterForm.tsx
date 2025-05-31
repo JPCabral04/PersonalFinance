@@ -24,8 +24,7 @@ const RegisterForm: React.FC = () => {
     reset,
     getValues,
   } = useForm<RegisterFormData>({
-    mode: 'onBlur',
-    reValidateMode: 'onChange',
+    mode: 'onChange',
   });
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
@@ -73,20 +72,19 @@ const RegisterForm: React.FC = () => {
         Crie Sua Conta
       </h2>
 
-      <p className="mt-1 text-center text-xs text-gray-600">
+      <p className="mt-1 text-center text-sm text-gray-600">
         É rápido e fácil.
       </p>
 
       {/* Formulário de Registro */}
       <form className="mt-6 space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {error && (
-          // Mensagens de erro/sucesso: px-4 py-3 para px-3 py-2, text-sm para text-xs
-          <div className="animate-fade-in rounded-md border border-red-200 bg-red-50 px-3 py-2 text-center text-xs text-red-700">
+          <div className="animate-fade-in rounded-md border border-red-200 bg-red-50 px-3 py-2 text-center text-sm text-red-700">
             {error}
           </div>
         )}
         {successMessage && (
-          <div className="bg-secondary-50 border-secondary-200 text-secondary-700 animate-fade-in rounded-md border px-3 py-2 text-center text-xs">
+          <div className="bg-secondary-50 border-secondary-200 text-secondary-700 animate-fade-in rounded-md border px-3 py-2 text-center text-sm">
             {successMessage}
           </div>
         )}
@@ -107,14 +105,13 @@ const RegisterForm: React.FC = () => {
             {...rhfRegister('name', { required: 'O nome é obrigatório.' })}
             className={`relative block w-full appearance-none border px-3 py-2 ${
               errors.name ? 'border-red-400' : 'border-gray-300'
-            } focus:ring-primary-500 focus:border-primary-500 rounded-md text-xs text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none sm:text-sm ${
-              // Ajustado text-xs para sm:text-sm
+            } focus:ring-primary-500 focus:border-primary-500 rounded-md text-sm text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none ${
               isFormDisabled ? 'cursor-not-allowed bg-gray-100' : ''
             }`}
             disabled={isFormDisabled}
           />
           {errors.name && (
-            <p className="mt-1 text-xs text-red-600">{errors.name.message}</p> // mt-2 para mt-1, text-sm para text-xs
+            <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
           )}
         </div>
 
@@ -139,13 +136,13 @@ const RegisterForm: React.FC = () => {
             })}
             className={`relative block w-full appearance-none border px-3 py-2 ${
               errors.email ? 'border-red-400' : 'border-gray-300'
-            } focus:ring-primary-500 focus:border-primary-500 rounded-md text-xs text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none sm:text-sm ${
+            } focus:ring-primary-500 focus:border-primary-500 rounded-md text-sm text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none ${
               isFormDisabled ? 'cursor-not-allowed bg-gray-100' : ''
             }`}
             disabled={isFormDisabled}
           />
           {errors.email && (
-            <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>
+            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
           )}
         </div>
 
@@ -170,13 +167,13 @@ const RegisterForm: React.FC = () => {
             })}
             className={`relative block w-full appearance-none border px-3 py-2 ${
               errors.password ? 'border-red-400' : 'border-gray-300'
-            } focus:ring-primary-500 focus:border-primary-500 rounded-md text-xs text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none sm:text-sm ${
+            } focus:ring-primary-500 focus:border-primary-500 rounded-md text-sm text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none ${
               isFormDisabled ? 'cursor-not-allowed bg-gray-100' : ''
             }`}
             disabled={isFormDisabled}
           />
           {errors.password && (
-            <p className="mt-1 text-xs text-red-600">
+            <p className="mt-1 text-sm text-red-600">
               {errors.password.message}
             </p>
           )}
@@ -201,13 +198,13 @@ const RegisterForm: React.FC = () => {
             })}
             className={`relative block w-full appearance-none border px-3 py-2 ${
               errors.confirmPassword ? 'border-red-400' : 'border-gray-300'
-            } focus:ring-primary-500 focus:border-primary-500 rounded-md text-xs text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none sm:text-sm ${
+            } focus:ring-primary-500 focus:border-primary-500 rounded-md text-sm text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out focus:outline-none ${
               isFormDisabled ? 'cursor-not-allowed bg-gray-100' : ''
             }`}
             disabled={isFormDisabled}
           />
           {errors.confirmPassword && (
-            <p className="mt-1 text-xs text-red-600">
+            <p className="mt-1 text-sm text-red-600">
               {errors.confirmPassword.message}
             </p>
           )}
@@ -220,7 +217,7 @@ const RegisterForm: React.FC = () => {
             disabled={isFormDisabled || !isValid}
             className={`group relative flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-base font-medium text-white ${
               isFormDisabled || !isValid
-                ? 'bg-primary-700/40 cursor-not-allowed' // Removida a classe 'tras' que estava incorreta
+                ? 'bg-primary-700/40 cursor-not-allowed'
                 : 'bg-primary-500 hover:bg-primary-600 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2 focus:outline-none'
             } transition duration-200 ease-in-out`}
           >
@@ -230,7 +227,7 @@ const RegisterForm: React.FC = () => {
       </form>
       {/* Link para Login */}
       <div className="text-center">
-        <p className="text-xs text-gray-600">
+        <p className="text-sm text-gray-600">
           Já tem uma conta?{' '}
           <button
             type="button"

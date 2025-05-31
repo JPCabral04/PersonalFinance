@@ -8,5 +8,10 @@ export const register = async (payload: UserRegisterPayload): Promise<User> => {
 
 export const login = async (payload: UserLoginPayload): Promise<AuthResponse> => {
   const response = await api.post<AuthResponse>('/auth/login', payload)
+
+  if (response.data && response.data.token) {
+    localStorage.setItem('token', response.data.token)
+  }
+
   return response.data;
 }
