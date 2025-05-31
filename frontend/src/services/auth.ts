@@ -1,4 +1,4 @@
-import type { AuthResponse, User, UserLoginPayload, UserRegisterPayload } from '@/interfaces/auth';
+import type { AuthResponse, User, UserLoginPayload, UserRegisterPayload } from '@/types/auth';
 import api from './api';
 
 export const register = async (payload: UserRegisterPayload): Promise<User> => {

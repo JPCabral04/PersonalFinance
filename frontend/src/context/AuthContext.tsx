@@ -10,7 +10,7 @@ import {
   login as authLoginService,
   register as authRegisterService,
 } from '@/services/auth';
-import type { UserLoginPayload, UserRegisterPayload } from '@/interfaces/auth';
+import type { UserLoginPayload, UserRegisterPayload } from '@/types/auth';
 import api from '@/services/api';
 import { useNavigate } from 'react-router-dom';
 
