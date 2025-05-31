@@ -1,5 +1,3 @@
-import type { User } from "./auth";
-
 export type AccountType =
   | 'Corrente'
   | 'Poupança'
@@ -16,7 +14,7 @@ export interface Account {
   // incomingTransactions?: Transaction[];
 }
 
-export interface createAccountPayload {
+export interface CreateAccountPayload {
   name: string;
   accountType: AccountType;
   balance?: number;
