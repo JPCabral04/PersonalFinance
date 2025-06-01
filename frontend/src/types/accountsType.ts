@@ -7,7 +7,7 @@ export type AccountType =
 export interface Account {
   id: string;
   name: string;
-  type: AccountType;
+  accountType: AccountType;
   balance: number;
   userId: string;
   // outgoingTransactions?: Transaction[];

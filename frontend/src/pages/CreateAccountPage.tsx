@@ -74,7 +74,7 @@ const CreateAccountPage: React.FC = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
-      <div className="w-full max-w-lg rounded-lg bg-white px-4 py-8 shadow-md sm:px-6 md:px-8">
+      <div className="w-full max-w-lg rounded-lg bg-white px-4 py-8 sm:px-6 md:px-8 md:shadow-md">
         <h2 className="text-center text-2xl font-extrabold text-gray-800">
           Criar Nova Conta Financeira
         </h2>
