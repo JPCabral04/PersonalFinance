@@ -123,6 +123,18 @@ const LoginForm: React.FC = () => {
           </button>
         </div>
       </form>
+      <div className="text-center">
+        <p className="text-sm text-gray-600">
+          Não tem uma conta?
+          <button
+            type="button"
+            onClick={() => navigate('/register')}
+            className="text-primary-600 hover:text-primary-700 focus:ring-primary-500 mt-1 ml-1 font-medium underline focus:ring-2 focus:ring-offset-2 focus:outline-none"
+          >
+            Cadastre-se aqui.
+          </button>
+        </p>
+      </div>
     </div>
   );
 };
