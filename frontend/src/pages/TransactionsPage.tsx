@@ -1,3 +1,11 @@
-export default function TransactionsPage() {
-  return <h1>Transactions Page</h1>;
-}
+import HeaderComponent from '@/components/HeaderComponent';
+
+const TransactionsPage: React.FC = () => {
+  return (
+    <>
+      <HeaderComponent />
+    </>
+  );
+};
+
+export default TransactionsPage;

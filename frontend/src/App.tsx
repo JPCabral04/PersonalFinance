@@ -13,6 +13,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import CreateAccountPage from './pages/CreateAccountPage';
 import AccountsPage from './pages/AccountsPage';
 import ProfilePage from './pages/ProfilePage';
+import TransactionsPage from './pages/TransactionsPage';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -89,6 +90,14 @@ const App: React.FC = () => {
             element={
               <PrivateRoute>
                 <ProfilePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/transactions"
+            element={
+              <PrivateRoute>
+                <TransactionsPage />
               </PrivateRoute>
             }
           />
