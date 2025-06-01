@@ -1,7 +1,7 @@
 import RegisterForm from '@/components/RegisterForm';
 import circlesBackground from '../assets/circles-background.png';
 
-export default function RegisterPage() {
+const RegisterPage: React.FC = () => {
   return (
     <div className="flex h-screen flex-col md:flex-row">
       <div className="flex flex-1 items-center justify-center">
@@ -16,4 +16,6 @@ export default function RegisterPage() {
       </div>
     </div>
   );
-}
+};
+
+export default RegisterPage;

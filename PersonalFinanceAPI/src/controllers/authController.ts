@@ -28,8 +28,8 @@ export const login = async (
   try {
     const { email, password } = req.body;
 
-    const token = await signUser(email, password);
-    res.status(status.OK).json({ token });
+    const authData = await signUser(email, password);
+    res.status(status.OK).json(authData);
   } catch (err: any) {
     next(err);
   }

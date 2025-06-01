@@ -1,3 +1,5 @@
+import type { Account } from "./accountsType";
+
 export interface UserRegisterPayload {
   name: string;
   email: string;
@@ -11,11 +13,12 @@ export interface UserLoginPayload {
 
 export interface AuthResponse {
   token: string;
+  user?: User;
 }
 
 export interface User {
   id: string;
   name: string;
   email: string;
-  // accounts?: Account[];
+  accounts?: Account[];
 }

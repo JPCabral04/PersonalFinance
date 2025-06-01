@@ -10,13 +10,27 @@ import {
   login as authLoginService,
   register as authRegisterService,
 } from '@/services/auth';
-import type { UserLoginPayload, UserRegisterPayload } from '@/types/authType';
+import type {
+  User,
+  UserLoginPayload,
+  UserRegisterPayload,
+} from '@/types/authType';
 import api from '@/services/api';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+
+interface JwtUserPayload {
+  id: string;
+  name: string;
+  email: string;
+  iat: number;
+  exp: number;
+}
 
 interface AuthContextType {
   token: string | null;
   isAuthenticated: boolean;
+  user: User | null;
   login: (payload: UserLoginPayload) => Promise<void>;
   register: (payload: UserRegisterPayload) => Promise<void>;
   logout: () => void;
@@ -33,17 +47,45 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoadingAuth, setIsLoadingAuth] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState<boolean>(true);
   const [authError, setAuthError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
-      setIsAuthenticated(true);
-    }
-    setIsLoadingAuth(false);
+    const initializeAuth = () => {
+      const storedToken = localStorage.getItem('token');
+      if (storedToken) {
+        try {
+          const decodedToken = jwtDecode<JwtUserPayload>(storedToken); // Decodifica o token
+
+          const currentTime = Date.now() / 1000;
+          if (decodedToken.exp < currentTime) {
+            console.warn('Token expirado. Realizando logout...');
+            logout();
+            return;
+          }
+
+          setToken(storedToken);
+          setIsAuthenticated(true);
+
+          setUser({
+            id: decodedToken.id,
+            name: decodedToken.name,
+            email: decodedToken.email,
+          });
+        } catch (error) {
+          console.error(
+            'Erro ao decodificar ou validar token do localStorage:',
+            error,
+          );
+          logout();
+        }
+      }
+      setIsLoadingAuth(false);
+    };
+
+    initializeAuth();
   }, []);
 
   const login = useCallback(async (payload: UserLoginPayload) => {
@@ -51,12 +93,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setAuthError(null);
     try {
       const response = await authLoginService(payload);
-      const receivedToken = response.token;
 
-      if (receivedToken) {
-        localStorage.setItem('token', receivedToken);
-        setToken(receivedToken);
+      if (response && response.token) {
+        localStorage.setItem('token', response.token);
+        setToken(response.token);
         setIsAuthenticated(true);
+        setUser(response.user || null);
       } else {
         throw new Error('Token não recebido na resposta do login.');
       }
@@ -68,6 +110,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.removeItem('token');
       setToken(null);
       setIsAuthenticated(false);
+      setUser(null);
       throw err;
     } finally {
       setIsLoadingAuth(false);
@@ -93,6 +136,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('token');
     setToken(null);
     setIsAuthenticated(false);
+    setUser(null);
     navigate('/login');
   }, []);
 
@@ -118,6 +162,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       value={{
         token,
         isAuthenticated,
+        user,
         login,
         register,
         logout,

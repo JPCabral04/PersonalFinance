@@ -1,7 +1,7 @@
 import LoginForm from '@/components/LoginForm';
 import bankBackground from '@/assets/bank-background.png';
 
-export default function LoginPage() {
+const LoginPage: React.FC = () => {
   return (
     <div className="flex h-screen flex-col md:flex-row">
       <div className="bg-background hidden flex-1 items-center justify-center md:flex">
@@ -16,4 +16,6 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;

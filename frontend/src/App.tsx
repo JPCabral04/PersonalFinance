@@ -10,8 +10,9 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import LoadingSpinner from './components/LoadingSpinner';
+import CreateAccountPage from './pages/CreateAccountPage';
+import AccountsPage from './pages/AccountsPage';
 
-// Componente para rotas protegidas (já existente)
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -63,6 +64,23 @@ const App: React.FC = () => {
             element={
               <PrivateRoute>
                 <HomePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/createAccount"
+            element={
+              <PrivateRoute>
+                <CreateAccountPage />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/accounts"
+            element={
+              <PrivateRoute>
+                <AccountsPage />
               </PrivateRoute>
             }
           />
