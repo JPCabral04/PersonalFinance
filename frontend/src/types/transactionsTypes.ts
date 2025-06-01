@@ -1,8 +1,8 @@
 import type { Account } from "./accountsType";
 
 export interface TransferPayload {
-  originAccountId: string;
-  destinationAccountId: string;
+  originAccount: string;
+  destinationAccount: string;
   amount: number;
   description?: string;
 }

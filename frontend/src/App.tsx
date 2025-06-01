@@ -14,6 +14,7 @@ import CreateAccountPage from './pages/CreateAccountPage';
 import AccountsPage from './pages/AccountsPage';
 import ProfilePage from './pages/ProfilePage';
 import TransactionsPage from './pages/TransactionsPage';
+import CreateTransferPage from './pages/CreateTransferPage';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -98,6 +99,14 @@ const App: React.FC = () => {
             element={
               <PrivateRoute>
                 <TransactionsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/createTransaction"
+            element={
+              <PrivateRoute>
+                <CreateTransferPage />
               </PrivateRoute>
             }
           />

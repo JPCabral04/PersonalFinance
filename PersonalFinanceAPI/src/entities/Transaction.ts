@@ -16,10 +16,14 @@ export class Transaction {
   @Column({ type: 'enum', enum: TransactionType })
   transactionType!: TransactionType;
 
-  @ManyToOne(() => Account, (account) => account.outgoingTransactions)
+  @ManyToOne(() => Account, (account) => account.outgoingTransactions, {
+    onDelete: 'CASCADE',
+  })
   originAccount!: Account;
 
-  @ManyToOne(() => Account, (account) => account.incomingTransactions)
+  @ManyToOne(() => Account, (account) => account.incomingTransactions, {
+    onDelete: 'CASCADE',
+  })
   destinationAccount!: Account;
 
   @Column({ type: 'numeric' })
