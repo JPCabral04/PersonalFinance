@@ -12,6 +12,7 @@ import RegisterPage from './pages/RegisterPage';
 import LoadingSpinner from './components/LoadingSpinner';
 import CreateAccountPage from './pages/CreateAccountPage';
 import AccountsPage from './pages/AccountsPage';
+import ProfilePage from './pages/ProfilePage';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -75,12 +76,19 @@ const App: React.FC = () => {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/accounts"
             element={
               <PrivateRoute>
                 <AccountsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
               </PrivateRoute>
             }
           />
