@@ -1,3 +1,5 @@
+import type { Transaction } from "./transactionsTypes";
+
 export type AccountType =
   | 'Corrente'
   | 'Poupança'
@@ -10,8 +12,8 @@ export interface Account {
   accountType: AccountType;
   balance: number;
   userId: string;
-  // outgoingTransactions?: Transaction[];
-  // incomingTransactions?: Transaction[];
+  outgoingTransactions?: Transaction[];
+  incomingTransactions?: Transaction[];
 }
 
 export interface CreateAccountPayload {
